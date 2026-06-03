@@ -1,0 +1,134 @@
+{
+  "nav": {
+    "home": "Home",
+    "marketplace": "Marketplace",
+    "dashboard": "Dashboard",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout",
+    "profile": "Profile",
+    "notifications": "Notifications"
+  },
+  "hero": {
+    "tagline": "Connecting Farmers and Buyers Directly",
+    "subtitle": "Fresh produce from farm to your table. No middlemen, better prices.",
+    "startSelling": "Start Selling",
+    "browseProducts": "Browse Products"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email Address",
+    "password": "Password",
+    "name": "Full Name",
+    "mobile": "Mobile Number",
+    "location": "Location",
+    "role": "I am a",
+    "farmer": "Farmer",
+    "buyer": "Buyer",
+    "forgotPassword": "Forgot Password?",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "noAccount": "Don't have an account?",
+    "hasAccount": "Already have an account?"
+  },
+  "product": {
+    "addProduct": "Add Product",
+    "editProduct": "Edit Product",
+    "deleteProduct": "Delete Product",
+    "productName": "Product Name",
+    "category": "Category",
+    "quantity": "Quantity",
+    "price": "Price (₹/kg)",
+    "location": "Location",
+    "description": "Description",
+    "harvestDate": "Harvest Date",
+    "shelfLife": "Shelf Life",
+    "uploadImage": "Upload Image",
+    "suggestedPrice": "Suggested Market Price",
+    "availability": "Availability",
+    "available": "Available",
+    "soldOut": "Sold Out",
+    "farmerName": "Farmer",
+    "viewDetails": "View Details",
+    "placeOrder": "Place Order",
+    "addToFavorites": "Add to Favorites",
+    "categories": {
+      "all": "All Products",
+      "vegetables": "Vegetables",
+      "fruits": "Fruits",
+      "grains": "Grains",
+      "organic": "Organic",
+      "other": "Other"
+    }
+  },
+  "order": {
+    "placeOrder": "Place Order",
+    "orderQuantity": "Order Quantity",
+    "deliveryAddress": "Delivery Address",
+    "notes": "Notes",
+    "totalPrice": "Total Price",
+    "orderStatus": "Order Status",
+    "pending": "Pending",
+    "confirmed": "Confirmed",
+    "shipped": "Shipped",
+    "delivered": "Delivered",
+    "cancelled": "Cancelled",
+    "myOrders": "My Orders",
+    "noOrders": "No orders yet"
+  },
+  "dashboard": {
+    "totalProducts": "Total Products",
+    "totalOrders": "Total Orders",
+    "activeListings": "Active Listings",
+    "revenue": "Revenue",
+    "ordersPlaced": "Orders Placed",
+    "favorites": "Favorites",
+    "recentPurchases": "Recent Purchases",
+    "recentOrders": "Recent Orders",
+    "welcome": "Welcome back"
+  },
+  "marketplace": {
+    "search": "Search products, farmers...",
+    "filter": "Filter",
+    "sort": "Sort By",
+    "latest": "Latest",
+    "priceLow": "Price: Low to High",
+    "priceHigh": "Price: High to Low",
+    "noProducts": "No products found",
+    "loadMore": "Load More"
+  },
+  "tamil": {
+    "quote": "உழுதுண்டு வாழ்வாரே வாழ்வார்",
+    "quoteTranslation": "Those who cultivate and live by farming truly sustain society.",
+    "heritage": "Tamil Agricultural Heritage",
+    "appreciation": "Celebrating the spirit of Tamil farmers who feed our nation"
+  },
+  "stats": {
+    "farmersRegistered": "Farmers Registered",
+    "buyersRegistered": "Buyers Registered",
+    "productsListed": "Products Listed"
+  },
+  "footer": {
+    "about": "About",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "tagline": "Empowering Farmers, Enabling Buyers"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "success": "Success",
+    "confirm": "Confirm",
+    "back": "Back",
+    "viewAll": "View All",
+    "darkMode": "Dark Mode",
+    "lightMode": "Light Mode"
+  }
+}
