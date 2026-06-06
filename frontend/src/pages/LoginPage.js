@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Leaf, Eye, EyeOff, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
@@ -8,11 +8,18 @@ import toast from 'react-hot-toast';
 
 export default function LoginPage() {
   const { t } = useTranslation();
-  const { login } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  // Already logged in — redirect to intended page or dashboard
+  if (isAuthenticated) {
+    const from = location.state?.from || '/dashboard';
+    return <Navigate to={from} replace />;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,7 +28,10 @@ export default function LoginPage() {
       const { data } = await api.post('/auth/login', form);
       login(data.token, data.user);
       toast.success(`Welcome back, ${data.user.name}!`);
-      navigate('/dashboard');
+      // Redirect to intended page or role-based default
+      const from = location.state?.from;
+      if (from) { navigate(from, { replace: true }); return; }
+      navigate(data.user.role === 'farmer' ? '/dashboard' : '/marketplace');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Login failed');
     } finally {
@@ -32,7 +42,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-charcoal px-4 py-12">
       <div className="w-full max-w-md animate-slide-up">
-        {/* Logo */}
         <div className="text-center mb-8">
           <div className="w-14 h-14 bg-paddy-green rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
             <Leaf className="w-7 h-7 text-white" />
@@ -77,7 +86,6 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Demo credentials */}
         <div className="mt-4 p-4 bg-green-50 dark:bg-green-900/20 rounded-xl text-xs text-gray-600 dark:text-gray-400">
           <p className="font-semibold text-paddy-green mb-1">Demo Credentials</p>
           <p>Admin: admin@agridirect.in / Admin@123</p>

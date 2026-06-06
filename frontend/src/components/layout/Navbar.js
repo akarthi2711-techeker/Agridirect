@@ -97,9 +97,10 @@ export default function Navbar() {
             <NavLink to="/" label={t('nav.home')} />
             <NavLink to="/marketplace" label={t('nav.marketplace')} />
             {user && <NavLink to="/dashboard" label={t('nav.dashboard')} />}
-            {user && <NavLink to="/orders" label={t('order.myOrders')} />}
-            {user?.role === 'buyer' && <NavLink to="/favorites" label={t('nav.notifications').replace('Notifications', 'Favorites')} icon={<Heart className="w-4 h-4" />} />}
-            {user?.role === 'farmer' && (
+            {user?.role?.toLowerCase() === 'buyer' && <NavLink to="/orders" label={t('order.myOrders')} />}
+            {user?.role?.toLowerCase() === 'farmer' && <NavLink to="/orders" label="Orders Received" />}
+            {user?.role?.toLowerCase() === 'buyer' && <NavLink to="/favorites" label={t('nav.notifications').replace('Notifications', 'Favorites')} icon={<Heart className="w-4 h-4" />} />}
+            {user?.role?.toLowerCase() === 'farmer' && (
               <Link to="/products/add" className="ml-1 btn-primary text-sm py-2 px-4 flex items-center gap-1">
                 <Package className="w-4 h-4" /> {t('product.addProduct')}
               </Link>
@@ -182,8 +183,9 @@ export default function Navbar() {
                     </div>
                     <DropdownItem to="/profile" icon={<User className="w-4 h-4" />} label={t('nav.profile')} onClick={() => setUserOpen(false)} />
                     <DropdownItem to="/dashboard" icon={<LayoutDashboard className="w-4 h-4" />} label={t('nav.dashboard')} onClick={() => setUserOpen(false)} />
-                    <DropdownItem to="/orders" icon={<ShoppingBag className="w-4 h-4" />} label={t('order.myOrders')} onClick={() => setUserOpen(false)} />
-                    {user?.role === 'admin' && (
+                    {user?.role?.toLowerCase() === 'buyer' && <DropdownItem to="/orders" icon={<ShoppingBag className="w-4 h-4" />} label={t('order.myOrders')} onClick={() => setUserOpen(false)} />}
+                    {user?.role?.toLowerCase() === 'farmer' && <DropdownItem to="/orders" icon={<ShoppingBag className="w-4 h-4" />} label="Orders Received" onClick={() => setUserOpen(false)} />}
+                    {user?.role?.toLowerCase() === 'admin' && (
                       <DropdownItem to="/admin" icon={<Shield className="w-4 h-4" />} label="Admin Panel" onClick={() => setUserOpen(false)} />
                     )}
                     <button onClick={handleLogout} className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
@@ -214,9 +216,10 @@ export default function Navbar() {
             <MobileNavLink to="/" label={t('nav.home')} onClick={() => setMobileOpen(false)} />
             <MobileNavLink to="/marketplace" label={t('nav.marketplace')} onClick={() => setMobileOpen(false)} />
             {user && <MobileNavLink to="/dashboard" label={t('nav.dashboard')} onClick={() => setMobileOpen(false)} />}
-            {user && <MobileNavLink to="/orders" label={t('order.myOrders')} onClick={() => setMobileOpen(false)} />}
-            {user?.role === 'buyer' && <MobileNavLink to="/favorites" label="Favorites" onClick={() => setMobileOpen(false)} />}
-            {user?.role === 'farmer' && <MobileNavLink to="/products/add" label={t('product.addProduct')} onClick={() => setMobileOpen(false)} />}
+            {user?.role?.toLowerCase() === 'buyer' && <MobileNavLink to="/orders" label={t('order.myOrders')} onClick={() => setMobileOpen(false)} />}
+            {user?.role?.toLowerCase() === 'farmer' && <MobileNavLink to="/orders" label="Orders Received" onClick={() => setMobileOpen(false)} />}
+            {user?.role?.toLowerCase() === 'buyer' && <MobileNavLink to="/favorites" label="Favorites" onClick={() => setMobileOpen(false)} />}
+            {user?.role?.toLowerCase() === 'farmer' && <MobileNavLink to="/products/add" label={t('product.addProduct')} onClick={() => setMobileOpen(false)} />}
             {!user && (
               <div className="flex gap-2 pt-2">
                 <Link to="/login" onClick={() => setMobileOpen(false)} className="flex-1 btn-secondary text-center text-sm py-2">{t('nav.login')}</Link>

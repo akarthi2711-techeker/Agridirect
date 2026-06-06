@@ -19,7 +19,7 @@ router.get('/', authenticate, async (req, res) => {
         'SELECT COUNT(*) AS totalOrders FROM orders WHERE farmer_id = ?', [id]
       );
       const [[{ revenue }]] = await db.execute(
-        'SELECT COALESCE(SUM(total_price), 0) AS revenue FROM orders WHERE farmer_id = ? AND status IN ("delivered", "confirmed")', [id]
+        'SELECT COALESCE(SUM(total_price), 0) AS revenue FROM orders WHERE farmer_id = ? AND status IN ("delivered", "accepted", "packed", "shipped")', [id]
       );
       const [recentOrders] = await db.execute(
         `SELECT o.*, p.name AS product_name, u.name AS buyer_name

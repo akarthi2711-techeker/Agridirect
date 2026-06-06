@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: process.env.FRONTEND_URL || http://agridirect-frontend.s3-website.ap-south-1.amazonaws.com
   credentials: true,
 }));
 app.use(express.json());

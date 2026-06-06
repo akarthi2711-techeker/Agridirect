@@ -1,0 +1,20 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Environment files — NEVER commit these
+backend/.env
+frontend/.env
+frontend/.env.production
+frontend/.env.local
+
+# React build output
+frontend/build/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/

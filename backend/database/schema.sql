@@ -1,6 +1,4 @@
--- AgriDirect Lite Database Schema
--- Run this file to initialize the database
-
+-- AgriDirect Lite Database Schema v2
 CREATE DATABASE IF NOT EXISTS agridirect_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE agridirect_db;
 
@@ -13,6 +11,14 @@ CREATE TABLE IF NOT EXISTS users (
   mobile VARCHAR(15),
   role ENUM('farmer', 'buyer', 'admin') NOT NULL DEFAULT 'buyer',
   location VARCHAR(200),
+  village VARCHAR(100),
+  district VARCHAR(100),
+  state VARCHAR(100) DEFAULT 'Tamil Nadu',
+  -- Farmer-specific
+  farming_experience INT,
+  -- Buyer-specific
+  company_name VARCHAR(150),
+  business_type ENUM('hotel', 'hostel', 'restaurant', 'caterer', 'vegetable_shop', 'individual', 'other'),
   profile_picture VARCHAR(500),
   language_preference VARCHAR(10) DEFAULT 'en',
   theme_preference ENUM('light', 'dark') DEFAULT 'light',
@@ -34,9 +40,10 @@ CREATE TABLE IF NOT EXISTS products (
   location VARCHAR(200),
   description TEXT,
   harvest_date DATE,
-  shelf_life VARCHAR(100),
+  shelf_life INT COMMENT 'shelf life in days',
+  fresh_until DATE COMMENT 'auto-calculated: harvest_date + shelf_life',
   image_url VARCHAR(500),
-  status ENUM('active', 'inactive', 'sold_out', 'pending') DEFAULT 'active',
+  status ENUM('active', 'low_stock', 'out_of_stock', 'inactive', 'pending') DEFAULT 'active',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   FOREIGN KEY (farmer_id) REFERENCES users(id) ON DELETE CASCADE
@@ -51,7 +58,7 @@ CREATE TABLE IF NOT EXISTS orders (
   quantity DECIMAL(10,2) NOT NULL,
   unit_price DECIMAL(10,2) NOT NULL,
   total_price DECIMAL(10,2) NOT NULL,
-  status ENUM('pending', 'confirmed', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
+  status ENUM('pending', 'accepted', 'packed', 'shipped', 'delivered', 'cancelled') DEFAULT 'pending',
   delivery_address TEXT,
   notes TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -68,6 +75,7 @@ CREATE TABLE IF NOT EXISTS notifications (
   title VARCHAR(200) NOT NULL,
   message TEXT NOT NULL,
   type ENUM('order', 'product', 'system') DEFAULT 'system',
+  reference_id INT,
   is_read BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
@@ -99,10 +107,10 @@ CREATE TABLE IF NOT EXISTS settings (
 INSERT IGNORE INTO users (name, email, password, role, is_active)
 VALUES ('Admin', 'admin@agridirect.in', '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', TRUE);
 
--- Indexes for performance
-CREATE INDEX idx_products_farmer ON products(farmer_id);
-CREATE INDEX idx_products_category ON products(category);
-CREATE INDEX idx_products_status ON products(status);
-CREATE INDEX idx_orders_buyer ON orders(buyer_id);
-CREATE INDEX idx_orders_farmer ON orders(farmer_id);
-CREATE INDEX idx_notifications_user ON notifications(user_id);
+-- Indexes
+CREATE INDEX IF NOT EXISTS idx_products_farmer ON products(farmer_id);
+CREATE INDEX IF NOT EXISTS idx_products_category ON products(category);
+CREATE INDEX IF NOT EXISTS idx_products_status ON products(status);
+CREATE INDEX IF NOT EXISTS idx_orders_buyer ON orders(buyer_id);
+CREATE INDEX IF NOT EXISTS idx_orders_farmer ON orders(farmer_id);
+CREATE INDEX IF NOT EXISTS idx_notifications_user ON notifications(user_id, is_read);

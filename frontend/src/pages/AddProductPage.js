@@ -12,7 +12,7 @@ export default function AddProductPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: '', category: 'vegetables', quantity: '', price: '',
-    location: '', description: '', harvest_date: '', shelf_life: '',
+    location: '', description: '', harvest_date: '', shelf_life: '', status: 'active',
   });
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -98,6 +98,14 @@ export default function AddProductPage() {
                 </select>
               </div>
               <div>
+                <label className="label">Availability Status</label>
+                <select name="status" className="input-field" value={form.status || 'active'} onChange={handleChange}>
+                  <option value="active">Available</option>
+                  <option value="low_stock">Low Stock</option>
+                  <option value="out_of_stock">Out of Stock</option>
+                </select>
+              </div>
+              <div>
                 <label className="label">{t('product.quantity')} (kg) *</label>
                 <input name="quantity" type="number" required min="0.1" step="0.1" className="input-field"
                   placeholder="e.g. 100" value={form.quantity} onChange={handleChange} />
@@ -123,9 +131,14 @@ export default function AddProductPage() {
                   value={form.harvest_date} onChange={handleChange} />
               </div>
               <div>
-                <label className="label">{t('product.shelfLife')}</label>
-                <input name="shelf_life" className="input-field" placeholder="e.g. 7 days"
-                  value={form.shelf_life} onChange={handleChange} />
+                <label className="label">{t('product.shelfLife')} (days)</label>
+                <input name="shelf_life" type="number" min="1" max="365" className="input-field"
+                  placeholder="e.g. 7" value={form.shelf_life} onChange={handleChange} />
+                {form.harvest_date && form.shelf_life && (
+                  <p className="text-xs text-paddy-green mt-1">
+                    Fresh until: {new Date(new Date(form.harvest_date).setDate(new Date(form.harvest_date).getDate() + parseInt(form.shelf_life))).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  </p>
+                )}
               </div>
               <div className="col-span-2">
                 <label className="label">{t('product.description')}</label>

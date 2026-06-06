@@ -13,7 +13,6 @@ const uploadToS3 = async (fileBuffer, fileName, mimeType) => {
     Key: `products/${Date.now()}-${fileName}`,
     Body: fileBuffer,
     ContentType: mimeType,
-    ACL: 'public-read',
   };
   const result = await s3.upload(params).promise();
   return result.Location;
