@@ -5,11 +5,22 @@ require('dotenv').config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// Allowed origins — S3 frontend URL + local dev
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:3000',
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || http://agridirect-frontend.s3-website.ap-south-1.amazonaws.com
+  origin: (origin, callback) => {
+    // Allow requests with no origin (mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error(`CORS blocked: ${origin}`));
+  },
   credentials: true,
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,20 +36,26 @@ app.use('/api/admin', require('./routes/admin'));
 
 // Health check
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'AgriDirect Lite API', timestamp: new Date().toISOString() });
+  res.json({
+    status: 'ok',
+    service: 'AgriDirect Lite API',
+    timestamp: new Date().toISOString(),
+    allowedOrigins,
+  });
 });
 
-// 404 handler
+// 404
 app.use((req, res) => {
   res.status(404).json({ success: false, message: 'Route not found.' });
 });
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error('Unhandled error:', err);
+  console.error('Unhandled error:', err.message);
   res.status(500).json({ success: false, message: err.message || 'Internal server error.' });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🌾 AgriDirect Lite API running on port ${PORT}`);
+  console.log(`🌐 Allowed origins: ${allowedOrigins.join(', ')}`);
 });

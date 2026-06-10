@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// Uses REACT_APP_API_URL from .env.production at build time
+// Fallback to localhost for local development
 const api = axios.create({
-  baseURL:  'http://13.235.18.234:5000/api',
+  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
   timeout: 15000,
 });
 
@@ -12,7 +14,7 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Handle 401 globally
+// Handle 401 globally — clear session and redirect to login
 api.interceptors.response.use(
   (res) => res,
   (err) => {

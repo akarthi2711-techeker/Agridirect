@@ -159,6 +159,8 @@ router.put('/:id/status', authenticate, async (req, res) => {
     const isFarmer = req.user.role === 'farmer' && order.farmer_id === req.user.id;
     const isBuyerCancelling = req.user.role === 'buyer' && order.buyer_id === req.user.id && normalizedStatus === 'cancelled';
     const isAdmin = req.user.role === 'admin';
+    console.log("Logged user:", req.user);
+    console.log("Order farmer:", order.farmer_id);
 
     if (!isFarmer && !isBuyerCancelling && !isAdmin) {
       return res.status(403).json({ success: false, message: 'Not authorized to update this order.' });
