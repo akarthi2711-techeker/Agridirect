@@ -34,6 +34,12 @@ app.use('/api/favorites', require('./routes/favorites'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/admin', require('./routes/admin'));
 
+// AI Market Advisor
+app.use('/api/ai', require('./routes/ai'));
+app.use('/api/market', require('./routes/market'));
+app.use('/api/crop', require('./routes/crop'));
+app.use('/api/chat', require('./routes/chatHistory'));
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({

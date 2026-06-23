@@ -1,0 +1,11 @@
+{
+  "name": "agridirect-ai-advisor-lambda",
+  "version": "1.0.0",
+  "description": "AgriDirect AI Market Advisor — Lambda function",
+  "main": "handler.js",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "3.600.0",
+    "@aws-sdk/client-bedrock-runtime": "3.600.0",
+    "@aws-sdk/util-dynamodb": "3.600.0"
+  }
+}

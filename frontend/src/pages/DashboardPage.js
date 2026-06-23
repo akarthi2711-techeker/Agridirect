@@ -5,6 +5,7 @@ import { Package, ShoppingBag, TrendingUp, Star, Plus, Eye, LayoutDashboard, Bel
 import { useAuth } from '../context/AuthContext';
 import StatCard from '../components/ui/StatCard';
 import OrderStatusBadge from '../components/ui/OrderStatusBadge';
+import AIAdvisor from '../components/ai/AIAdvisor';
 import api from '../services/api';
 
 export default function DashboardPage() {
@@ -74,6 +75,9 @@ export default function DashboardPage() {
             <RecentOrdersSection orders={data.recentOrders} role="farmer" />
           </>
         )}
+
+        {/* ── AI Advisor — farmer only ── */}
+        {user?.role?.toLowerCase() === 'farmer' && <AIAdvisor />}
 
         {/* ── BUYER ── */}
         {user?.role?.toLowerCase() === 'buyer' && data && (
