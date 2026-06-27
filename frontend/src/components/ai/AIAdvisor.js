@@ -7,8 +7,9 @@ const QUICK_ACTIONS = [
   { icon: '🌾', label: "Today's Market Price", message: 'What is the tomato price today?', intent: 'price' },
   { icon: '📈', label: 'Price Trend Analysis', message: 'Show tomato price trend for last 30 days', intent: 'trend' },
   { icon: '🏪', label: 'Best Nearby Market', message: 'Which nearby market gives better price for tomato?', intent: 'nearby' },
-  { icon: '🚜', label: 'Crop Recommendation', message: 'What crops are suitable for my soil and season?', intent: 'recommend' },
+  { icon: '🔍', label: 'Market Analysis', message: 'Analyze the current tomato market situation', intent: 'analyze' },
   { icon: '💰', label: 'Should I Sell Now?', message: 'Should I sell my tomatoes now?', intent: 'sell' },
+  { icon: '🚜', label: 'Crop Recommendation', message: 'What crops are suitable for my soil and season?', intent: 'recommend' },
   { icon: '🌦', label: 'Seasonal Crop Advice', message: 'What crops should I grow this season?', intent: 'seasonal' },
 ];
 
@@ -29,10 +30,18 @@ function MessageBubble({ msg }) {
             : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-tl-sm border border-gray-100 dark:border-gray-700'
         }`}
       >
-        {msg.text}
-        <p className={`text-[10px] mt-1 ${isUser ? 'text-green-200 text-right' : 'text-gray-400 dark:text-gray-500'}`}>
-          {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        </p>
+        <pre className="whitespace-pre-wrap font-sans">{msg.text}</pre>
+        <div className={`flex items-center justify-between mt-1 gap-2`}>
+          <p className={`text-[10px] ${isUser ? 'text-green-200' : 'text-gray-400 dark:text-gray-500'}`}>
+            {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </p>
+          {!isUser && msg.bedrockUsed === true && (
+            <span className="text-[10px] text-purple-500 dark:text-purple-400 font-medium">✦ Bedrock</span>
+          )}
+          {!isUser && msg.cached && (
+            <span className="text-[10px] text-blue-400 font-medium">⚡ cached</span>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -134,6 +143,8 @@ export default function AIAdvisor() {
         role: 'assistant',
         text: data.response || 'Sorry, I could not generate a response.',
         timestamp: new Date().toISOString(),
+        bedrockUsed: data.bedrockUsed,
+        cached: data.cached,
       };
       setMessages(prev => [...prev, aiMsg]);
     } catch (err) {

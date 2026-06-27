@@ -1,9 +1,10 @@
 import axios from 'axios';
+import API_URL from '../config/api';
 
-// Uses REACT_APP_API_URL from .env.production at build time
-// Fallback to localhost for local development
+// All API calls use REACT_APP_API_URL (set in .env / Vercel dashboard).
+// One URL. One place to change it.
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
+  baseURL: API_URL,
   timeout: 15000,
 });
 

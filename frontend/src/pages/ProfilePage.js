@@ -57,10 +57,13 @@ export default function ProfilePage() {
     e.preventDefault();
     setSaving(true);
     try {
-      const fd = new FormData();
-      Object.entries(form).forEach(([k, v]) => { if (v !== null && v !== undefined) fd.append(k, v); });
-      if (avatar) fd.append('profile_picture', avatar);
-      await api.put('/profile', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+      const payload = { ...form };
+      if (avatar) {
+        payload.profile_picture = avatar;
+      }
+      
+      await api.put('/profile', payload);
+      
       updateUser({ ...form, profile_picture: avatarPreview });
       i18n.changeLanguage(form.language_preference);
       toast.success('Profile updated!');
@@ -110,7 +113,17 @@ export default function ProfilePage() {
                   <Camera className="w-3.5 h-3.5" />
                 </button>
                 <input id="avatar-input" type="file" accept="image/*" className="hidden"
-                  onChange={e => { const f = e.target.files[0]; if (f) { setAvatar(f); setAvatarPreview(URL.createObjectURL(f)); } }} />
+                  onChange={e => { 
+                    const f = e.target.files[0]; 
+                    if (f) { 
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        setAvatar(reader.result);
+                        setAvatarPreview(reader.result);
+                      };
+                      reader.readAsDataURL(f);
+                    } 
+                  }} />
               </div>
               <div>
                 <p className="font-semibold text-gray-900 dark:text-white">{user?.name}</p>
