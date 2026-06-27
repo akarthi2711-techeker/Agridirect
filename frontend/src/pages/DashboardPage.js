@@ -45,13 +45,13 @@ export default function DashboardPage() {
         </div>
 
         {/* ── FARMER ── */}
-        {user?.role?.toLowerCase() === 'farmer' && data && (
+        {user?.role?.toLowerCase() === 'farmer' && (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-              <StatCard icon={<Package className="w-6 h-6" />} label={t('dashboard.totalProducts')} value={data.stats.totalProducts} color="green" />
-              <StatCard icon={<Eye className="w-6 h-6" />} label={t('dashboard.activeListings')} value={data.stats.activeListings} color="blue" />
-              <StatCard icon={<ShoppingBag className="w-6 h-6" />} label={t('dashboard.totalOrders')} value={data.stats.totalOrders} color="orange" />
-              <StatCard icon={<TrendingUp className="w-6 h-6" />} label={t('dashboard.revenue')} value={`Rs.${parseFloat(data.stats.revenue || 0).toLocaleString()}`} color="yellow" />
+              <StatCard icon={<Package className="w-6 h-6" />} label={t('dashboard.totalProducts')} value={data?.stats?.totalProducts || 0} color="green" />
+              <StatCard icon={<Eye className="w-6 h-6" />} label={t('dashboard.activeListings')} value={data?.stats?.activeListings || 0} color="blue" />
+              <StatCard icon={<ShoppingBag className="w-6 h-6" />} label={t('dashboard.totalOrders')} value={data?.stats?.totalOrders || 0} color="orange" />
+              <StatCard icon={<TrendingUp className="w-6 h-6" />} label={t('dashboard.revenue')} value={`Rs.${parseFloat(data?.stats?.revenue || 0).toLocaleString()}`} color="yellow" />
             </div>
 
             {/* Quick nav for farmer */}
@@ -72,7 +72,7 @@ export default function DashboardPage() {
             </div>
 
             <FarmerProductsSection />
-            <RecentOrdersSection orders={data.recentOrders} role="farmer" />
+            <RecentOrdersSection orders={data?.recentOrders || []} role="farmer" />
           </>
         )}
 
@@ -177,6 +177,22 @@ function FarmerProductsSection() {
                   {p.status?.replace('_', ' ')}
                 </span>
                 <Link to={`/products/edit/${p.id}`} className="text-xs text-paddy-green hover:underline">{t('common.edit')}</Link>
+                <button 
+                  onClick={async () => {
+                    if (window.confirm('Are you sure you want to delete this product?')) {
+                      try {
+                        await api.delete(`/market/${p.id}`);
+                        setProducts(products.filter(prod => prod.id !== p.id));
+                        toast.success('Product deleted successfully');
+                      } catch (err) {
+                        toast.error('Failed to delete product');
+                      }
+                    }
+                  }}
+                  className="text-xs text-red-500 hover:underline ml-2"
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}
