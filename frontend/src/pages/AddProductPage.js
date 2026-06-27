@@ -22,8 +22,11 @@ export default function AddProductPage() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImage(file);
-      setPreview(URL.createObjectURL(file));
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -48,10 +51,13 @@ export default function AddProductPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      const fd = new FormData();
-      Object.entries(form).forEach(([k, v]) => v && fd.append(k, v));
-      if (image) fd.append('image', image);
-      await api.post('/products', fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+      const payload = { ...form };
+      if (preview) {
+        payload.imageUrl = preview;
+      }
+      
+      await api.post('/market', payload);
+      
       toast.success('Product added successfully!');
       navigate('/dashboard');
     } catch (err) {
