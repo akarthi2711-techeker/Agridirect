@@ -70,20 +70,24 @@ export default function HomePage() {
 
               {/* Two clear CTAs side by side */}
               <div className="flex flex-wrap gap-3">
-                <button
-                  onClick={handleStartSelling}
-                  className="bg-white text-paddy-green hover:bg-green-50 font-semibold px-7 py-3.5 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-base"
-                >
-                  <Sprout className="w-5 h-5" />
-                  {isAuthenticated && user?.role === 'farmer' ? 'My Dashboard' : 'Start Selling'}
-                </button>
-                <button
-                  onClick={handleStartBuying}
-                  className="bg-harvest-yellow hover:bg-yellow-400 text-gray-900 font-semibold px-7 py-3.5 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-base"
-                >
-                  <ShoppingBag className="w-5 h-5" />
-                  {isAuthenticated && user?.role === 'buyer' ? 'Browse Marketplace' : 'Start Buying'}
-                </button>
+                {(!isAuthenticated || user?.role === 'farmer') && (
+                  <button
+                    onClick={handleStartSelling}
+                    className="bg-white text-paddy-green hover:bg-green-50 font-semibold px-7 py-3.5 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-base"
+                  >
+                    <Sprout className="w-5 h-5" />
+                    {isAuthenticated ? 'My Dashboard' : 'Start Selling'}
+                  </button>
+                )}
+                {(!isAuthenticated || user?.role === 'buyer') && (
+                  <button
+                    onClick={handleStartBuying}
+                    className="bg-harvest-yellow hover:bg-yellow-400 text-gray-900 font-semibold px-7 py-3.5 rounded-xl transition-all shadow-lg hover:shadow-xl flex items-center gap-2 text-base"
+                  >
+                    <ShoppingBag className="w-5 h-5" />
+                    {isAuthenticated ? 'Browse Marketplace' : 'Start Buying'}
+                  </button>
+                )}
               </div>
 
               {isAuthenticated && (
