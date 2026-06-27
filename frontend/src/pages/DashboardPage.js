@@ -136,7 +136,7 @@ function FarmerProductsSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/products/farmer/my')
+    api.get('/market/farmer/my')
       .then(({ data }) => setProducts(data.products?.slice(0, 5) || []))
       .catch(() => {})
       .finally(() => setLoading(false));

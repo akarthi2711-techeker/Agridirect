@@ -36,7 +36,7 @@ export default function ProductDetailPage() {
   const [favorited, setFavorited] = useState(false);
 
   useEffect(() => {
-    api.get(`/products/${id}`)
+    api.get(`/market/${id}`)
       .then(({ data }) => setProduct(data.product))
       .catch(() => navigate('/marketplace'))
       .finally(() => setLoading(false));

@@ -22,7 +22,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get('/products?limit=6&sort=latest')
+    api.get('/market?limit=6&sort=latest')
       .then(({ data }) => {
         setFeaturedProducts(data.products || []);
         setStats(s => ({ ...s, products: data.total || 0 }));

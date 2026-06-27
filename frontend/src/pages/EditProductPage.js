@@ -20,7 +20,7 @@ export default function EditProductPage() {
   const [suggestedPrice, setSuggestedPrice] = useState(null);
 
   useEffect(() => {
-    api.get(`/products/${id}`).then(({ data }) => {
+    api.get(`/market/${id}`).then(({ data }) => {
       const p = data.product;
       setForm({
         name: p.name, category: p.category, quantity: p.quantity, price: p.price,
@@ -53,7 +53,7 @@ export default function EditProductPage() {
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => v !== null && v !== undefined && fd.append(k, v));
       if (image) fd.append('image', image);
-      await api.put(`/products/${id}`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
+      await api.put(`/market/${id}`, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
       toast.success('Product updated successfully!');
       navigate('/dashboard');
     } catch (err) {
@@ -65,7 +65,7 @@ export default function EditProductPage() {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
     setDeleting(true);
     try {
-      await api.delete(`/products/${id}`);
+      await api.delete(`/market/${id}`);
       toast.success('Product deleted');
       navigate('/dashboard');
     } catch (err) {

@@ -55,7 +55,7 @@ export default function MarketplacePage() {
       if (location) params.location = location;
       if (availability !== 'all') params.availability = availability;
 
-      const { data } = await api.get('/products', { params });
+      const { data } = await api.get('/market', { params });
       setProducts(reset ? data.products : prev => [...prev, ...data.products]);
       setTotalPages(data.pages);
       setTotal(data.total);
@@ -203,7 +203,7 @@ function FarmerListingsPanel({ onProductDeleted }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    api.get('/products/farmer/my')
+    api.get('/market/farmer/my')
       .then(({ data }) => setProducts(data.products || []))
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -213,7 +213,7 @@ function FarmerListingsPanel({ onProductDeleted }) {
     if (!window.confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
     setDeleting(product.id);
     try {
-      await api.delete(`/products/${product.id}`);
+      await api.delete(`/market/${product.id}`);
       toast.success(`"${product.name}" deleted.`);
       setProducts(prev => prev.filter(p => p.id !== product.id));
       onProductDeleted?.();
